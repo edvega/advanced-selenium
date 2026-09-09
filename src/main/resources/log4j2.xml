@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <!-- Define where and how logs will be captured -->
+    <Appenders>
+        <!-- 1. Console Appender: Prints logs to the terminal -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%t] %d{yyyy-MM-dd HH:mm:ss} %-5p [%c{1}] %m%n" />
+        </Console>
+    </Appenders>
+
+    <!-- Map package log levels to the designated appenders -->
+    <Loggers>
+        <!-- Global fallback logging level -->
+        <Root level="TRACE">
+            <AppenderRef ref="ConsoleAppender" />
+        </Root>
+    </Loggers>
+</Configuration>
