@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 public class BasePage {
 
@@ -77,10 +78,40 @@ public class BasePage {
         return driver.getCurrentUrl();
     }
 
+    /** Get title of current page */
+    public String getCurrentPageTitle() {
+        return driver.getTitle();
+    }
+
+    /** Get source of current page */
+    public String getCurrentPageSource() {
+        return driver.getPageSource();
+    }
+
     /** Wait for alert present and then switch to it */
     protected Alert switchToAlert() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.alertIsPresent());
         return driver.switchTo().alert();
+    }
+
+    public void switchToWindowWithTitle(String expectedTitle) {
+        // Switching to new window
+        String firstWindow = driver.getWindowHandle();
+        Set<String> allWindows = driver.getWindowHandles();
+
+        for (String windowHandle : allWindows) {
+            if (!windowHandle.equals(firstWindow)) {
+                driver.switchTo().window(windowHandle);
+                if (getCurrentPageTitle().equals(expectedTitle)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /** Switch to iFrame using it's locator */
+    protected void switchToFrame(By frameLocator) {
+        driver.switchTo().frame(find(frameLocator));
     }
 }
