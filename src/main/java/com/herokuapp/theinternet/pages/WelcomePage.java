@@ -10,6 +10,7 @@ public class WelcomePage extends BasePage {
     private final By formAuthenticatorLinkLocator = By.linkText("Form Authentication");
     private final By checkboxesLinkLocator = By.linkText("Checkboxes");
     private final By dropdownLinkLocator = By.linkText("Dropdown");
+    private final By javaScriptAlertsLinkLocator = By.linkText("JavaScript Alerts");
 
     public WelcomePage(WebDriver driver, Logger log) {
         super(driver, log);
@@ -42,4 +43,11 @@ public class WelcomePage extends BasePage {
         click(dropdownLinkLocator);
         return new DropdownPage(driver, log);
     }
+
+    public JavaScriptAlertsPage clickJavaScriptAlertsLink() {
+        log.info("Clicking JavaScript Alerts link on Welcome Page");
+        click(javaScriptAlertsLinkLocator);
+        return new JavaScriptAlertsPage(driver, log);
+    }
+
 }
