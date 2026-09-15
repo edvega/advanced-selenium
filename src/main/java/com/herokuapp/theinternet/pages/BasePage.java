@@ -127,4 +127,49 @@ public class BasePage {
         Actions action = new Actions(driver);
         action.sendKeys(key).build().perform();
     }
+
+    /** Drag 'from' element to 'to' element */
+    protected void performDragAndDrop(By from, By to) {
+//        These 2 lines of code are commented out because they don't work for HTML5 drag and drop, so we use JavaScript instead
+//        Actions action = new Actions(driver);
+//        action.dragAndDrop(find(from), find(to)).build().perform();
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        String script = """
+            function createEvent(typeOfEvent) {
+                var event =document.createEvent("CustomEvent");
+                event.initCustomEvent(typeOfEvent,true, true, null);
+                event.dataTransfer = {
+                    data: {}, setData: function (key, value) {
+                        this.data[key] = value;
+                    },
+                    getData: function (key) {
+                        return this.data[key];
+                    }
+                };
+                return event;
+            }
+            function dispatchEvent(element, event,transferData) {
+                if (transferData !== undefined) {
+                    event.dataTransfer = transferData;
+                }
+                if (element.dispatchEvent) {
+                    element.dispatchEvent(event);
+                } else if (element.fireEvent) {
+                    element.fireEvent("on" + event.type, event);
+                }
+            }
+            function simulateHTML5DragAndDrop(element, destination) {
+                var dragStartEvent =createEvent('dragstart');
+                dispatchEvent(element, dragStartEvent);
+                var dropEvent = createEvent('drop');
+                dispatchEvent(destination, dropEvent,dragStartEvent.dataTransfer);
+                var dragEndEvent = createEvent('dragend');
+                dispatchEvent(element, dragEndEvent,dropEvent.dataTransfer);
+            }
+            var source = arguments[0];
+            var destination = arguments[1];
+            simulateHTML5DragAndDrop(source,destination);
+            """;
+        jsExecutor.executeScript(script, find(from), find(to));
+    }
 }
