@@ -2,6 +2,7 @@ package com.herokuapp.theinternet.pages;
 
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 public class WelcomePage extends BasePage {
@@ -62,5 +63,11 @@ public class WelcomePage extends BasePage {
         log.info("Clicking WYSIWYG Editor link on Welcome Page");
         click(editorLinkLocator);
         return new EditorPage(driver, log);
+    }
+
+    public void scrollToBottom() {
+        log.info("Scrolling to the bottom of the page");
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("window.scrollTo(0, document.body.scrollHeight);");
     }
 }

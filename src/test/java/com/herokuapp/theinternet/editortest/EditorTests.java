@@ -14,6 +14,7 @@ public class EditorTests extends TestUtilities {
         log.info("Starting defaultEditorValueTest");
         WelcomePage welcomePage = new WelcomePage(driver, log);
         welcomePage.openPage();
+        welcomePage.scrollToBottom();
         EditorPage editorPage = welcomePage.clickWYSIWYGEditorLink();
         String editorText = editorPage.getEditorText();
         Assert.assertEquals(editorText, "Your content goes here.", "Editor default text is not expected. It is: " + editorText);

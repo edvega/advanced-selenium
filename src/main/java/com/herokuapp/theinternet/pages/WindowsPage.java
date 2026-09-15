@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 public class WindowsPage extends BasePage {
 
-    private By clickHereLinkLocator = By.linkText("Click Here");
+    private final By clickHereLinkLocator = By.linkText("Click Here");
 
     public WindowsPage(WebDriver driver, Logger log) {
         super(driver, log);
