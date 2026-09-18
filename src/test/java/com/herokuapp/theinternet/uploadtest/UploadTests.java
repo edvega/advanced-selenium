@@ -8,12 +8,11 @@ import com.herokuapp.theinternet.pages.FileUploaderPage;
 
 public class UploadTests extends TestUtilities {
 
-    @Test
-    public void imageUploadTest() {
-        log.info("Starting imageUploadTest");
+    @Test(dataProvider = "files")
+    public void fileUploadTest(int number, String fileName) {
+        log.info("Starting fileUploadTest #{} for {}", number, fileName);
         FileUploaderPage fileUploaderPage = new FileUploaderPage(driver, log);
         fileUploaderPage.openPage();
-        String fileName = "text.txt";
         fileUploaderPage.selectFile(fileName);
         fileUploaderPage.pushUploadButton();
         String fileNames = fileUploaderPage.getUploadedFilesNames();
