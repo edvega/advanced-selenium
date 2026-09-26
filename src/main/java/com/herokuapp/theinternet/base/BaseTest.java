@@ -9,20 +9,28 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import java.lang.reflect.Method;
+
 public class BaseTest {
 
     protected WebDriver driver;
     private BrowserDriverFactory factory;
     protected Logger log;
+    protected String testSuiteName;
+    protected String testName;
+    protected String testMethodName;
 
     @Parameters({ "browser" })
     @BeforeMethod(alwaysRun = true)
-    public void setUp(@Optional("chrome") String browser, ITestContext context) {
+    public void setUp(Method method, @Optional("chrome") String browser, ITestContext context) {
         String testName = context.getCurrentXmlTest().getName();
         log = LogManager.getLogger(testName);
         factory = new BrowserDriverFactory(browser, log);
         driver = factory.createDriver();
         driver.manage().window().maximize();
+        this.testName = testName;
+        this.testMethodName = method.getName();
+        this.testSuiteName = context.getName();
     }
 
     @AfterMethod(alwaysRun = true)

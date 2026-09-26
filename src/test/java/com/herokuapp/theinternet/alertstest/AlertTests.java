@@ -6,21 +6,24 @@ import org.testng.annotations.Test;
 import com.herokuapp.theinternet.base.TestUtilities;
 import com.herokuapp.theinternet.pages.JavaScriptAlertsPage;
 import com.herokuapp.theinternet.pages.WelcomePage;
+import org.testng.asserts.SoftAssert;
 
 public class AlertTests extends TestUtilities {
 
     @Test
     public void jsAlertTest() {
         log.info("Starting jsAlertTest");
+        SoftAssert softAssert = new SoftAssert();
         WelcomePage welcomePage = new WelcomePage(driver, log);
         welcomePage.openPage();
         JavaScriptAlertsPage alertsPage = welcomePage.clickJavaScriptAlertsLink();
         alertsPage.openJSAlert();
-        String alertMessage = alertsPage.getAlertText();
+        String alertMessage = alertsPage.getAlertText() + "[FAIL]";
         alertsPage.acceptAlert();
-        String result = alertsPage.getResultText();
-        Assert.assertEquals(alertMessage, "I am a JS Alert", "Alert message is not expected. \nShould be 'I am a JS Alert', but it is '" + alertMessage + "'");
-        Assert.assertEquals(result, "You successfully clicked an alert", "result is not expected. \nShould be 'You successfuly clicked an alert', but it is '" + result + "'");
+        String result = alertsPage.getResultText() + "[FAIL]";;
+        softAssert.assertEquals(alertMessage, "I am a JS Alert", "Alert message is not expected. \nShould be 'I am a JS Alert', but it is '" + alertMessage + "'");
+        softAssert.assertEquals(result, "You successfully clicked an alert", "result is not expected. \nShould be 'You successfuly clicked an alert', but it is '" + result + "'");
+        softAssert.assertAll();
     }
 
     @Test

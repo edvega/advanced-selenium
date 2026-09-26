@@ -14,8 +14,10 @@ public class PositiveLoginTests extends TestUtilities {
         log.info("Starting logIn test");
         WelcomePage welcomePage = new WelcomePage(driver, log);
         welcomePage.openPage();
+        takeScreenshot("WelcomePage opened");
         LoginPage loginPage = welcomePage.clickFormAuthenticationLink();
         SecureAreaPage secureAreaPage = loginPage.logIn("tomsmith", "SuperSecretPassword!");
+        takeScreenshot("SecureAreaPage opened");
         Assert.assertEquals(secureAreaPage.getPageUrl(), "http://the-internet.herokuapp.com/secure");
         Assert.assertTrue(secureAreaPage.isLogOutButtonVisible());
         Assert.assertTrue(secureAreaPage.getSuccessMessageText().contains("You logged into a secure area!"));
