@@ -4,6 +4,7 @@ import com.herokuapp.theinternet.base.TestUtilities;
 import com.herokuapp.theinternet.pages.LoginPage;
 import com.herokuapp.theinternet.pages.SecureAreaPage;
 import com.herokuapp.theinternet.pages.WelcomePage;
+import org.openqa.selenium.Cookie;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,8 +17,16 @@ public class PositiveLoginTests extends TestUtilities {
         welcomePage.openPage();
         takeScreenshot("WelcomePage opened");
         LoginPage loginPage = welcomePage.clickFormAuthenticationLink();
+        takeScreenshot("LoginPage opened");
+        Cookie cookie = new Cookie("username", "tomsmith", "the-internet.herokuapp.com", "/", null);
+        loginPage.setCookie(cookie);
         SecureAreaPage secureAreaPage = loginPage.logIn("tomsmith", "SuperSecretPassword!");
         takeScreenshot("SecureAreaPage opened");
+        String username = secureAreaPage.getCookie("username");
+        log.info("Username cookie: {}", username);
+        String session = secureAreaPage.getCookie("rack.session");
+        log.info("Session cookie: {}", session);
+
         Assert.assertEquals(secureAreaPage.getPageUrl(), "http://the-internet.herokuapp.com/secure");
         Assert.assertTrue(secureAreaPage.isLogOutButtonVisible());
         Assert.assertTrue(secureAreaPage.getSuccessMessageText().contains("You logged into a secure area!"));
